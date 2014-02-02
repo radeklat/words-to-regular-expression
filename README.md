@@ -10,21 +10,21 @@ regular expressions that will allow you to use strings operations for thousands
 of words in one quick pass over the target string. Here are some of the
 features:
 
-* Colapsing of repeated sequences.
+**Colapsing of repeated sequences**
 
-  For example _"subsubsection"_ will get transformed into _(?:sub){2}section_.
+For example _"subsubsection"_ will get transformed into _(?:sub){2}section_.
+
+This unfortunately does not produce a
+range yet. E.g. _"subsubsection"_, _"subsection"_ and _"section"_ will become
+_s(?:ection|ubs(?:ection|ubsection))_ rather than expected
+_(?:sub){0,2}section_.
+
+**Automatic escaping of regular expressions.**
   
-  This unfortunately does not produce a
-  range yet. E.g. _"subsubsection"_, _"subsection"_ and _"section"_ will become
-  _s(?:ection|ubs(?:ection|ubsection))_ rather than expected
-  _(?:sub){0,2}section_.
+For example _"test"_ and _"te*st"_ will become _te(?:st|\*st)_.
 
-* Automatic escaping of regular expressions.
-  
-  For example _"test"_ and _"te*st"_ will become _te(?:st|\*st)_.
+**Reading words from a file.**
 
-* Reading words from a file.
+**Support for the* `in` *operator.**
 
-* Support for the `in` operator.
-
-**See the [https://bitbucket.org/rlat/prefixtree/wiki/](wiki tab) for more information.**
+See the [wiki tab}(https://bitbucket.org/rlat/prefixtree/wiki/) for more information.
