@@ -27,4 +27,4 @@ For example _"test"_ and _"te*st"_ will become _te(?:st|\*st)_.
 
 **Support for the* `in` *operator.**
 
-See the [wiki tab}(https://bitbucket.org/rlat/prefixtree/wiki/) for more information.
+See the [wiki tab](https://bitbucket.org/rlat/prefixtree/wiki/) for more information.
