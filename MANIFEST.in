@@ -1,0 +1,4 @@
+include setup.py
+include w2re.py
+include *.txt
+include *.md
