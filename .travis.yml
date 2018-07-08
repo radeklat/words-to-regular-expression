@@ -1,0 +1,14 @@
+language: python
+
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "pypy"
+  - "pypy3"
+
+script: bash test.sh --no-install --noupdate --novirtualenv
+
+after_success:
+  - codecov

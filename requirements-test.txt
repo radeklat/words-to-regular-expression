@@ -1,0 +1,7 @@
+nose
+coverage
+pylint
+mypy
+rednose
+nose-timer
+codecov

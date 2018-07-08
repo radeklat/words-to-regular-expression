@@ -1,0 +1,34 @@
+from typing import Optional, Iterable
+
+from src.prefix_tree.primitives import PrefixTreeEdge, PrefixTreeNode
+from src.formaters import BaseFormater
+
+
+class PrefixTree:
+    def __init__(self, words: Optional[Iterable[str]] = None) -> None:
+        self._root_node = PrefixTreeNode()
+
+        if words is not None:
+            self.extend(words)
+
+    def add(self, word: str):
+        self._root_node.add(word)
+
+    def extend(self, words: Iterable[str]):
+        for word in words:
+            self.add(word)
+
+    def to_regexp(self, formatter: BaseFormater):
+        """
+        :return Returns regular expression representation of the structure.
+        If the structure is empty, returns regular expression matching
+        empty string.
+        """
+        formatter.wrap_regexp(self._root_node)
+
+    @staticmethod
+    def compress(word: str):
+        """
+        :return Input word in form of a compressed regular expression.
+        """
+        return PrefixTreeEdge.compress(word)
