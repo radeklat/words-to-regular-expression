@@ -1,5 +1,7 @@
 language: python
 
+cache: pip
+
 python:
   - "3.4"
   - "3.5"
@@ -8,7 +10,11 @@ python:
   - "pypy"
   - "pypy3"
 
-script: bash test.sh --noinstall --no-update --novirtualenv --strict
+install:
+  - pip install -r requirements-test.txt
+
+script:
+  - bash test.sh --noinstall --no-update --novirtualenv --strict
 
 after_success:
   - codecov
