@@ -4,11 +4,11 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-  - "3.7"
+  - "3.7-dev"
   - "pypy"
   - "pypy3"
 
-script: bash test.sh --no-install --noupdate --novirtualenv
+script: bash test.sh --noinstall --no-update --novirtualenv --strict
 
 after_success:
   - codecov
