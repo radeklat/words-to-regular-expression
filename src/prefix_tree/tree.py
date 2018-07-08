@@ -18,16 +18,16 @@ class PrefixTree:
         for word in words:
             self.add(word)
 
-    def to_regexp(self, formatter: Type[BaseFormater]):
+    def to_regexp(self, formatter: Type[BaseFormater]) -> str:
         """
         :return Returns regular expression representation of the structure.
         If the structure is empty, returns regular expression matching
         empty string.
         """
-        formatter.wrap_regexp(self._root_node)
+        return formatter.wrap_regexp(self._root_node)
 
     @staticmethod
-    def compress(word: str):
+    def compress(word: str) -> str:
         """
         :return Input word in form of a compressed regular expression.
         """

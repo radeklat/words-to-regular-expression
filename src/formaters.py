@@ -44,7 +44,7 @@ class PythonWordMatchFormater(PythonFormater):
         regexp = root_node.to_regexp()
 
         if regexp:
-            return r"((?:(?:\W+|\A){})+(?:\W+|\Z))".format(regexp)
+            return r"(?:(?:\W+|\A)({}))+(?:\W+|\Z)".format(regexp)
 
         return PythonFormater._EMPTY_STRING_MATCH
 
