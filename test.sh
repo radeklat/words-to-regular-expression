@@ -119,7 +119,7 @@ sigint_handler() {
 trap sigint_handler INT
 
 cleanup() {
-    rm -rf "${PYLINT_REPORT}" "${COVERAGE_FILE}" "${XUNIT_FILE}" .scannerwork .coverage \
+    rm -rf "${PYLINT_REPORT}" "${COVERAGE_FILE}" "${XUNIT_FILE}" .scannerwork \
     "${SONAR_SCANNER_ZIP_FILE}" "${SONAR_SCANNER_ZIP_FOLDER}" "${SONAR_REPORT}"
 }
 
