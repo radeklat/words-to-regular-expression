@@ -438,7 +438,6 @@ if [[ ${ENABLE_COVERAGE} == true && ${use_coverage} == true ]]; then
     test_failed $? "\nTest for minimum coverage of ${COVERAGE_MIN_PERCENTAGE:-0}%"
 
     coverage html -d cover
-    coverage xml
 
     # open in default browser
     [[ ${open_in_browser} == true ]] && ${WEBSITE_OPENER} "${COVER_PATH}/cover/index.html"
