@@ -8,16 +8,16 @@ from src.prefix_tree.tree import PrefixTree
 from src.formaters import BaseFormater, ALL_FORMATERS
 
 
-def stream_to_regexp(stream: TextIO, formatter: BaseFormater) -> str:
+def stream_to_regexp(stream: TextIO, formater: Type[BaseFormater]) -> str:
     lines_generator = (line for line in stream.read().split(os.linesep) if line)
     prefix_tree = PrefixTree(lines_generator)
-    return prefix_tree.to_regexp(formatter)
+    return prefix_tree.to_regexp(formater)
 
 
-FORMATERS_BY_CODE: Dict[str, Type[BaseFormater]] = {
+FORMATERS_BY_CODE = {
     formater.code(): formater
     for formater in ALL_FORMATERS
-}
+}  # type: Dict[str, Type[BaseFormater]]
 
 
 def main():

@@ -1,4 +1,4 @@
-from typing import Optional, Iterable
+from typing import Optional, Iterable, Type
 
 from src.prefix_tree.primitives import PrefixTreeEdge, PrefixTreeNode
 from src.formaters import BaseFormater
@@ -18,7 +18,7 @@ class PrefixTree:
         for word in words:
             self.add(word)
 
-    def to_regexp(self, formatter: BaseFormater):
+    def to_regexp(self, formatter: Type[BaseFormater]):
         """
         :return Returns regular expression representation of the structure.
         If the structure is empty, returns regular expression matching
