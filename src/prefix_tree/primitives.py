@@ -3,47 +3,68 @@ import re
 from src.prefix_tree.letter_range_utils import collapse_letter_ranges
 
 
-def compress(word, block_len=None):
-    if block_len is None:
-        block_len = len(word) // 2
+def compress(word, sliding_window_len=None):
+    """
+    This function uses sliding window of decreasing size to find repeated,
+    non-overlapping and adjacent sub-strings.
 
-    # don't compress blocks of two letters or less and single letter words
-    if block_len <= 0 or len(word) < 2:
-        return word
+    Example::
 
-    compress_word = ''
-    work_word = word
-    min_work_word_len = block_len * 2
+        BLACTGACTGA contains BL - 2x ACTG - A or BLA - 2x CTGA
 
-    while len(work_word) >= min_work_word_len:
-        remainder_start = block_len
-        repeat_cnt = 1
+    Note that the sub-string can be repeated more than 2x, so the function remembers
+    first window and then next window, that can be repeated 1+ times, while
+    counting the repetitions.
 
-        window = work_word[:block_len]
+    The function also applies itself on the longest discovered sub-string
+    recursively. So it discovers shorter sub-strings in sub-strings.
+
+    :param word: Input string.
+    :param sliding_window_len: Initial window size. Used by recursion. Do not set this
+        yourself.
+    :return: Compressed string.
+    """
+    if sliding_window_len is None:
+        sliding_window_len = len(word) // 2
+
+    if sliding_window_len <= 0 or len(word) <= 1:
+        return word  # don't compress these
+
+    # Stop index for two adjacent sliding windows. For blActgActgA it would be:
+    # blAct | gActg | A -> b | lActg | ActgA
+    stop_index = len(word) - sliding_window_len * 2 + 1
+
+    for i in range(0, stop_index):
+        next_window_start = i + sliding_window_len  # there can be more than 2 windows
+        first_window = word[i:next_window_start]
+        repeat_count = 0
 
         while True:
-            if work_word.startswith(window, remainder_start):
-                remainder_start += block_len
-                repeat_cnt += 1
-            else:
-                break
+            next_window_end = next_window_start + sliding_window_len
 
-        if (repeat_cnt > 1 and block_len > 1) or repeat_cnt > 2:
-            # there was a repetition of more than two letters
-            if block_len == 2 and window.startswith("\\"):
-                compress_word += "[%s]{%s}" % (window, repeat_cnt)
-            elif block_len > 1:
-                compress_word += "(?:%s){%s}" % (window, repeat_cnt)
-            else:
-                compress_word += "%s{%s}" % (window, repeat_cnt)
-            work_word = work_word[remainder_start:]
-        else:
-            compress_word += work_word[0]
-            work_word = work_word[1:]
+            if next_window_end >= len(word) + 1:
+                break  # next window overflows the string -> stop
 
-    compress_word += work_word
+            next_window = word[next_window_start:next_window_end]
 
-    return compress(compress_word, block_len - 1)
+            if first_window == next_window:
+                repeat_count += 1
+
+            next_window_start = next_window_end
+
+        if repeat_count > 0:
+            prefix = word[:i]
+
+            repeated_block_len_end = i + sliding_window_len * (repeat_count + 1)
+            suffix = word[repeated_block_len_end:]
+
+            center = compress(first_window)
+
+            final = prefix + '(?:' + center + '){' + str(repeat_count + 1) + '}' + suffix
+
+            return final
+
+    return compress(word, sliding_window_len - 1)
 
 
 class PrefixTreeNode:
