@@ -3,9 +3,15 @@ from typing import (
     Any,
     Callable,
     Type,
-    List,
+    Iterable,
 )
 from unittest import TestCase
+
+from hypothesis import (
+    given,
+    strategies as st,
+    reproduce_failure,
+)
 
 from src.formaters import (
     ALL_FORMATERS,
@@ -14,6 +20,12 @@ from src.formaters import (
     PythonWordMatchFormater,
 )
 from src.prefix_tree.tree import PrefixTree
+from tests.helpers.hypothesis import (
+    NON_EMPTY_TEXT_ITERABLES,
+    SPECIAL_CHARACTER_STRINGS,
+    LISTS_OF_WORDS,
+    NON_ALPHANUMERIC_STRING,
+)
 
 
 class BaseFormatterTestCase(TestCase):
@@ -57,40 +69,50 @@ class OtherFormatersTestCase(TestCase):
 
 
 class BaseTestCase(TestCase):
-    INPUT_WORDS = ['hello', 'hi', 'hahaha']
-    SAMPLE_TEXT = "hi. this is example hellous hello hihi hahahahah"
+    _FORMATER: Type[BaseFormater] = None
 
-    def assert_formater_output(
-            self,
-            formater: Type[PythonFormater],
-            expected_output: List[str]
-    ):
-        regexp = PrefixTree(self.INPUT_WORDS).to_regexp(formater)
-        output_word = re.compile(regexp).findall(self.SAMPLE_TEXT)
-        self.assertListEqual(expected_output, output_word)
+    def setUp(self):
+        assert self._FORMATER, '_FORMATER must be overwritten in sub-classes.'
 
-    def assert_formater_output_matches_empty_string(
-            self,
-            formater: Type[PythonFormater],
-    ):
-        regexp = PrefixTree([]).to_regexp(formater)
+    def check_formater_output(self, expected_strings: Iterable[str], delimiter: str = ' '):
+        sample_input = delimiter.join(expected_strings)
+        regexp = PrefixTree(expected_strings).to_regexp(self._FORMATER)
+
+        output_strings = sorted(set(re.compile(regexp).findall(sample_input)))
+
+        self.assertEqual(
+            sorted(set(expected_strings)),
+            output_strings,
+            msg="Regexp: {}\nInput: '{}'".format(regexp, sample_input)
+        )
+
+    def check_formater_output_matches_empty_string(self):
+        regexp = PrefixTree([]).to_regexp(self._FORMATER)
         output_word = re.compile(regexp).findall('')
         self.assertListEqual([''], output_word)
 
 
 class PythonFormaterTest(BaseTestCase):
-    def test_it_generates_regexp_that_can_match_input_strings(self):
-        expected_output = ['hi', 'hi', 'hello', 'hello', 'hi', 'hi', 'hahaha']
-        self.assert_formater_output(PythonFormater, expected_output)
+    _FORMATER = PythonFormater
+
+    def test_it_generates_regexps_that_can_match_special_characters(self):
+        self.check_formater_output(list(SPECIAL_CHARACTER_STRINGS.keys()))
+
+    @given(NON_EMPTY_TEXT_ITERABLES)
+    def test_it_generates_regexp_that_can_match_input_strings(self, strings):
+        self.check_formater_output(strings)
 
     def test_it_generates_regexp_that_can_match_empty_input(self):
-        self.assert_formater_output_matches_empty_string(PythonFormater)
+        self.check_formater_output_matches_empty_string()
 
 
 class PythonWordMatchingFormaterTest(BaseTestCase):
-    def test_it_generates_regexp_that_can_match_input_words(self):
-        expected_output = ['hi', 'hello']
-        self.assert_formater_output(PythonWordMatchFormater, expected_output)
+    _FORMATER = PythonWordMatchFormater
+
+    @given(LISTS_OF_WORDS, NON_ALPHANUMERIC_STRING)
+    #@reproduce_failure('3.66.1', b'AXicY2RgYGBkZGCww4cZGAAiAQH7')
+    def test_it_generates_regexp_that_can_match_input_words(self, words, delimiter):
+        self.check_formater_output(words, delimiter)
 
     def test_it_generates_regexp_that_can_match_empty_input(self):
-        self.assert_formater_output_matches_empty_string(PythonWordMatchFormater)
+        self.check_formater_output_matches_empty_string()

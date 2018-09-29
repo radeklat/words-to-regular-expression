@@ -1,6 +1,7 @@
+import re
 from typing import Optional, Iterable, Type
 
-from src.prefix_tree.primitives import PrefixTreeEdge, PrefixTreeNode
+from src.prefix_tree.primitives import PrefixTreeNode
 from src.formaters import BaseFormater
 
 
@@ -25,10 +26,3 @@ class PrefixTree:
         empty string.
         """
         return formatter.wrap_regexp(self._root_node)
-
-    @staticmethod
-    def compress(word: str) -> str:
-        """
-        :return Input word in form of a compressed regular expression.
-        """
-        return PrefixTreeEdge.compress(word)

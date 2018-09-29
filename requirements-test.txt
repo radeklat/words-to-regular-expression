@@ -5,3 +5,5 @@ mypy
 rednose
 nose-timer
 codecov
+hypothesis
+pytest

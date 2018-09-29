@@ -1,5 +1,49 @@
 import re
-from typing import List
+
+from src.prefix_tree.letter_range_utils import collapse_letter_ranges
+
+
+def compress(word, block_len=None):
+    if block_len is None:
+        block_len = len(word) // 2
+
+    # don't compress blocks of two letters or less and single letter words
+    if block_len <= 0 or len(word) < 2:
+        return word
+
+    compress_word = ''
+    work_word = word
+    min_work_word_len = block_len * 2
+
+    while len(work_word) >= min_work_word_len:
+        remainder_start = block_len
+        repeat_cnt = 1
+
+        window = work_word[:block_len]
+
+        while True:
+            if work_word.startswith(window, remainder_start):
+                remainder_start += block_len
+                repeat_cnt += 1
+            else:
+                break
+
+        if (repeat_cnt > 1 and block_len > 1) or repeat_cnt > 2:
+            # there was a repetition of more than two letters
+            if block_len == 2 and window.startswith("\\"):
+                compress_word += "[%s]{%s}" % (window, repeat_cnt)
+            elif block_len > 1:
+                compress_word += "(?:%s){%s}" % (window, repeat_cnt)
+            else:
+                compress_word += "%s{%s}" % (window, repeat_cnt)
+            work_word = work_word[remainder_start:]
+        else:
+            compress_word += work_word[0]
+            work_word = work_word[1:]
+
+    compress_word += work_word
+
+    return compress(compress_word, block_len - 1)
 
 
 class PrefixTreeNode:
@@ -50,48 +94,21 @@ class PrefixTreeNode:
 
         if letters and not strings:  # just letters
             if len(letters) == 1:  # just one letter
-                return self._add_me(letters[0], False)
+                return self._add_me(re.escape(letters[0]), False)
 
             # more letters, group in []
             return self._add_me(
-                '[' + ''.join(PrefixTreeNode.compress_range(letters)) + ']', False
+                '[' + ''.join(collapse_letter_ranges(letters)) + ']', False
             )
         elif not letters and len(strings) == 1:  # just one string
             return self._add_me(strings[0], True)
         else:  # combination of letters and strings
             if len(letters) > 1:
-                strings.insert(0, '[' + ''.join(letters) + ']')
+                strings.insert(0, '[' + ''.join(collapse_letter_ranges(letters)) + ']')
             elif len(letters) == 1:
                 strings.insert(0, letters[0])
 
             return self._add_me(self._non_matching_brackets('|'.join(strings)), False)
-
-    @staticmethod
-    def compress_range(letters: List[str]) -> List[str]:
-        letters.sort()
-        letters_out = []
-        last_letter = letters[0]
-        first_letter = letters[0]
-
-        for letter in letters[1:]:
-            if letter.isalnum() and ord(letter) == ord(last_letter) + 1:
-                pass
-            else:
-                if first_letter != last_letter:
-                    letters_out.append("%s-%s" % (first_letter, last_letter))
-                else:
-                    letters_out.append(re.escape(last_letter))
-
-                first_letter = letter
-
-            last_letter = letter
-
-        if first_letter != last_letter:
-            letters_out.append("%s-%s" % (first_letter, last_letter))
-        else:
-            letters_out.append(re.escape(last_letter))
-
-        return letters_out
 
 
 class PrefixTreeEdge(object):
@@ -137,53 +154,10 @@ class PrefixTreeEdge(object):
     def __str__(self):
         return self._label if self._label is not None else ""
 
-    @staticmethod
-    def compress(word, block_len=None):
-        if block_len is None:
-            block_len = len(word) // 2
-
-        # don't compress blocks of two letters or less and single letter words
-        if block_len <= 0 or len(word) < 2:
-            return word
-
-        compress_word = ''
-        work_word = word
-        min_work_word_len = block_len * 2
-
-        while len(work_word) >= min_work_word_len:
-            remainder_start = block_len
-            repeat_cnt = 1
-
-            window = work_word[:block_len]
-
-            while True:
-                if work_word.startswith(window, remainder_start):
-                    remainder_start += block_len
-                    repeat_cnt += 1
-                else:
-                    break
-
-            if (repeat_cnt > 1 and block_len > 1) or repeat_cnt > 2:
-                # there was a repetition of more than two letters
-                if block_len == 2 and window.startswith("\\"):
-                    compress_word += "[%s]{%s}" % (window, repeat_cnt)
-                elif block_len > 1:
-                    compress_word += "(?:%s){%s}" % (window, repeat_cnt)
-                else:
-                    compress_word += "%s{%s}" % (window, repeat_cnt)
-                work_word = work_word[remainder_start:]
-            else:
-                compress_word += work_word[0]
-                work_word = work_word[1:]
-
-        compress_word += work_word
-
-        return PrefixTreeEdge.compress(compress_word, block_len - 1)
-
     def to_regexp(self):
         from_below = self._target_node.to_regexp()
 
         if len(from_below) + len(self._label) <= 1:  # don't escape single characters
             return self._label + from_below
 
-        return self.compress(re.escape(self._label)) + from_below
+        return compress(re.escape(self._label)) + from_below
