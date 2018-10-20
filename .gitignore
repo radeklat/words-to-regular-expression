@@ -231,3 +231,4 @@ pyvenv.cfg
 pip-selfcheck.json
 
 cover
+.hypothesis
