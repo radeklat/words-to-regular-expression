@@ -1,9 +1,8 @@
-nose
 coverage
 pylint
 mypy
-rednose
-nose-timer
 codecov
 hypothesis
 pytest
+pytest-cov
+pytest-xdist

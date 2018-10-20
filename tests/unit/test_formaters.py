@@ -2,15 +2,13 @@ import re
 from typing import (
     Any,
     Callable,
-    Type,
     Iterable,
+    Type,
 )
 from unittest import TestCase
 
 from hypothesis import (
     given,
-    strategies as st,
-    reproduce_failure,
 )
 
 from src.formaters import (
@@ -21,10 +19,10 @@ from src.formaters import (
 )
 from src.prefix_tree.tree import PrefixTree
 from tests.helpers.hypothesis import (
-    NON_EMPTY_TEXT_ITERABLES,
-    SPECIAL_CHARACTER_STRINGS,
     LISTS_OF_WORDS,
     NON_ALPHANUMERIC_STRING,
+    NON_EMPTY_TEXT_ITERABLES,
+    SPECIAL_CHARACTER_STRINGS,
 )
 
 
@@ -110,7 +108,6 @@ class PythonWordMatchingFormaterTest(BaseTestCase):
     _FORMATER = PythonWordMatchFormater
 
     @given(LISTS_OF_WORDS, NON_ALPHANUMERIC_STRING)
-    #@reproduce_failure('3.66.1', b'AXicY2RgYGBkZGCww4cZGAAiAQH7')
     def test_it_generates_regexp_that_can_match_input_words(self, words, delimiter):
         self.check_formater_output(words, delimiter)
 

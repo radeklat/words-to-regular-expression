@@ -62,8 +62,8 @@ disable=missing-docstring,
         missing-return-type-doc,
         missing-yield-doc,
         missing-yield-type-doc,
-        unused-import,
         apply-builtin,
+        logging-fstring-interpolation,
         backtick,
         basestring-builtin,
         buffer-builtin,
@@ -312,10 +312,7 @@ logging-modules=logging
 [MISCELLANEOUS]
 
 # List of note tags to take in consideration, separated by a comma.
-notes=FIXME,
-      XXX,
-      TODO
-
+notes=
 
 [SIMILARITIES]
 
@@ -326,10 +323,10 @@ ignore-comments=yes
 ignore-docstrings=yes
 
 # Ignore imports when computing similarities.
-ignore-imports=no
+ignore-imports=yes
 
 # Minimum lines number of a similarity.
-min-similarity-lines=4
+min-similarity-lines=50
 
 
 [SPELLING]
@@ -416,11 +413,11 @@ callbacks=cb_,
 
 # A regular expression matching the name of dummy variables (i.e. expectedly
 # not used).
-dummy-variables-rgx=(_+[a-zA-Z0-9_]*?$)|args|kwargs
+dummy-variables-rgx=(_+[a-zA-Z0-9_]*?$)
 
 # Argument names that match this expression will be ignored. Default to name
 # with leading underscore
-ignored-argument-names=_.*|^ignored_|^unused_
+ignored-argument-names=_.*|^ignored_|^unused_|^(kw)?args$
 
 # Tells whether we should check for unused import in __init__ files.
 init-import=no
