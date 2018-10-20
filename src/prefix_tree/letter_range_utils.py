@@ -4,7 +4,7 @@ from typing import List
 _SQUARE_BRACKET_ESCAPABLES = {'[', ']', '\\'}
 
 
-def _escape_character(character: str) -> str:
+def escape_character_for_square_brackets(character: str) -> str:
     return '\\' + character if character in _SQUARE_BRACKET_ESCAPABLES else character
 
 
@@ -32,7 +32,7 @@ _STATE_IN_RANGE = 3
 
 def collapse_letter_ranges(letters: List[str]) -> List[str]:
     if len(letters) == 1:
-        return [_escape_character(letters[0])]
+        return [escape_character_for_square_brackets(letters[0])]
 
     # Make hyphen first in the list, if present
     letters.sort(key=lambda character: -1 if character == '-' else ord(character))
@@ -48,13 +48,13 @@ def collapse_letter_ranges(letters: List[str]) -> List[str]:
                 state = _STATE_RANGE_START
                 first_letter = current_letter
             else:
-                letters_out.append(_escape_character(current_letter))
+                letters_out.append(escape_character_for_square_brackets(current_letter))
 
         elif state == _STATE_RANGE_START:
             if not current_letter.isalnum():
                 state = _STATE_NO_RANGE
                 letters_out.append(first_letter)
-                letters_out.append(_escape_character(current_letter))
+                letters_out.append(escape_character_for_square_brackets(current_letter))
             elif _is_next_letter(previous_letter, current_letter):
                 state = _STATE_IN_RANGE
             else:
@@ -65,7 +65,7 @@ def collapse_letter_ranges(letters: List[str]) -> List[str]:
             if not current_letter.isalnum():
                 state = _STATE_NO_RANGE
                 letters_out.extend(_formatted_letter_range(first_letter, previous_letter))
-                letters_out.append(_escape_character(current_letter))
+                letters_out.append(escape_character_for_square_brackets(current_letter))
             elif not _is_next_letter(previous_letter, current_letter):
                 state = _STATE_RANGE_START
                 letters_out.extend(_formatted_letter_range(first_letter, previous_letter))

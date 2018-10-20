@@ -3,6 +3,26 @@ import re
 from src.prefix_tree.letter_range_utils import collapse_letter_ranges
 
 
+def get_stop_index(word, sliding_window_length):
+    """ Stop index for two adjacent sliding windows.
+
+    For blActgActgA it would be::
+
+        blAct | gActg | A -> b | lActg | ActgA
+
+    """
+    return len(word) - sliding_window_length * 2 + 1
+
+
+def add_brackets_around_string(word: str):
+    """Adds square brackets for single character strings and round the rest.
+    """
+    if len(word) == 1 or (len(word) == 2 and word.startswith('\\')):
+        return word
+
+    return '(?:' + word + ')'
+
+
 def compress(word, sliding_window_len=None):
     """
     This function uses sliding window of decreasing size to find repeated,
@@ -30,16 +50,16 @@ def compress(word, sliding_window_len=None):
     if sliding_window_len <= 0 or len(word) <= 1:
         return word  # don't compress these
 
-    # Stop index for two adjacent sliding windows. For blActgActgA it would be:
-    # blAct | gActg | A -> b | lActg | ActgA
-    stop_index = len(word) - sliding_window_len * 2 + 1
+    stop_index = get_stop_index(word, sliding_window_len)
+    i = 0
+    compression_observed = False
 
-    for i in range(0, stop_index):
+    while i < stop_index:
         next_window_start = i + sliding_window_len  # there can be more than 2 windows
         first_window = word[i:next_window_start]
         repeat_count = 0
 
-        while True:
+        while True:  # Repeat next windows until non-matching found
             next_window_end = next_window_start + sliding_window_len
 
             if next_window_end >= len(word) + 1:
@@ -47,24 +67,30 @@ def compress(word, sliding_window_len=None):
 
             next_window = word[next_window_start:next_window_end]
 
-            if first_window == next_window:
-                repeat_count += 1
+            if first_window != next_window:
+                break
 
+            repeat_count += 1
             next_window_start = next_window_end
 
         if repeat_count > 0:
+            compression_observed = True
             prefix = word[:i]
 
             repeated_block_len_end = i + sliding_window_len * (repeat_count + 1)
             suffix = word[repeated_block_len_end:]
 
-            center = compress(first_window)
+            center = add_brackets_around_string(compress(first_window))
 
-            final = prefix + '(?:' + center + '){' + str(repeat_count + 1) + '}' + suffix
+            new_word = prefix + center + '{' + str(repeat_count + 1) + '}'
+            i = len(new_word) - 1  # skip the compressed part, investigate only the rest
+            new_word += suffix
+            word = new_word
+            stop_index = get_stop_index(word, sliding_window_len)
 
-            return final
+        i += 1
 
-    return compress(word, sliding_window_len - 1)
+    return word if compression_observed else compress(word, sliding_window_len - 1)
 
 
 class PrefixTreeNode:
