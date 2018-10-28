@@ -33,10 +33,10 @@ class CollapseLettersIntoRangesTest(TestCase):
 
     def test_special_characters_are_escaped(self):
         samples = {
-            '[': ['\['],
-            ']': ['\]'],
-            '[]': ['\[', '\]'],
-            '][': ['\[', '\]'],
+            '[': [r'\['],
+            ']': [r'\]'],
+            '[]': [r'\[', r'\]'],
+            '][': [r'\[', r'\]'],
             '\\': ['\\\\'],
         }
 

@@ -13,9 +13,9 @@ class Compress(TestCase):
             ['blact', 'blact', 'no compression possible'],
             ['blactgactga', 'bl(?:actg){2}a', '2 overlapping substrings'],
             ['blactgactgactga', 'bl(?:actg){3}a', '3 overlapping substrings'],
-            # TODO: optimize to a{7}
+            # TODO(Radek): optimize to a{7}
             ['aaaaaaa', '(?:a{3}){2}a', 'single letter 7 times'],
-            # TODO: optimize to (?:\\ª){8}
+            # TODO(Radek): optimize to (?:\\ª){8}
             ['\\ª\\ª\\ª\\ª\\ª\\ª\\ª\\ª', '(?:(?:\\ª{2}){2}){2}', 'escaped string'],
             ['ctaact', 'cta{2}ct', "don't compress non-adjacent blocks"],
         ]
