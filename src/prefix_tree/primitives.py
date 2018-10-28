@@ -147,18 +147,20 @@ class PrefixTreeNode:
             return self._add_me(
                 '[' + ''.join(collapse_letter_ranges(letters)) + ']', False
             )
-        elif not letters and len(strings) == 1:  # just one string
+
+        if not letters and len(strings) == 1:  # just one string
             return self._add_me(strings[0], True)
-        else:  # combination of letters and strings
-            if len(letters) > 1:
-                strings.insert(0, '[' + ''.join(collapse_letter_ranges(letters)) + ']')
-            elif len(letters) == 1:
-                strings.insert(0, letters[0])
 
-            return self._add_me(self._non_matching_brackets('|'.join(strings)), False)
+        # combination of letters and strings
+        if len(letters) > 1:
+            strings.insert(0, '[' + ''.join(collapse_letter_ranges(letters)) + ']')
+        elif len(letters) == 1:
+            strings.insert(0, letters[0])
+
+        return self._add_me(self._non_matching_brackets('|'.join(strings)), False)
 
 
-class PrefixTreeEdge(object):
+class PrefixTreeEdge:
     def __init__(self, label, terminal, new_node=None):
         self._target_node = new_node if new_node is not None else PrefixTreeNode(terminal)
         self._label = label

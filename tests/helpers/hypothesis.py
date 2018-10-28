@@ -10,7 +10,7 @@ NON_EMPTY_TEXT_ITERABLES = st.lists(
 
 LISTS_OF_WORDS = st.lists(
     st.builds(
-        lambda _: ''.join(_),
+        ''.join,
         st.lists(st.characters(whitelist_categories=(
             'Lu', 'Ll', 'Lt', 'Lm', 'Lo', 'Nd', 'Nl', 'No'
         )), min_size=1),
@@ -19,7 +19,7 @@ LISTS_OF_WORDS = st.lists(
 )
 
 NON_ALPHANUMERIC_STRING = st.builds(
-    lambda _: ''.join(_),
+    ''.join,
     st.lists(st.characters(whitelist_categories=(
         'Zs', 'Zl', 'Zp'
     )), min_size=1),

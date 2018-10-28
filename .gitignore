@@ -232,3 +232,4 @@ pip-selfcheck.json
 
 cover
 .hypothesis
+*_test_results.xml

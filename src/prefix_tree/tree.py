@@ -1,4 +1,3 @@
-import re
 from typing import Optional, Iterable, Type
 
 from src.prefix_tree.primitives import PrefixTreeNode
