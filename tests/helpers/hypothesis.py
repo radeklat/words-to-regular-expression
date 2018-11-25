@@ -1,7 +1,7 @@
 from hypothesis import strategies as st
 
 
-NON_EMPTY_STRINGS = st.characters().filter(lambda _: _.strip())
+NON_EMPTY_STRINGS = st.characters().filter(lambda _: _.strip() != "")
 
 
 NON_EMPTY_TEXT_ITERABLES = st.lists(

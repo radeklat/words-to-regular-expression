@@ -1,8 +1,8 @@
 coverage
-pylint
+pylint<2.0.4
 mypy
 codecov
 hypothesis
-pytest
+pytest<4
 pytest-cov
 pytest-xdist

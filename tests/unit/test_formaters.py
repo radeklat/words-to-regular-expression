@@ -67,10 +67,11 @@ class OtherFormatersTestCase(TestCase):
 
 
 class BaseTestCase(TestCase):
-    _FORMATER: Type[BaseFormater] = None
+    _FORMATER: Type[BaseFormater] = BaseFormater
 
     def setUp(self):
-        assert self._FORMATER, '_FORMATER must be overwritten in sub-classes.'
+        assert self._FORMATER != BaseFormater, \
+            '_FORMATER must be overwritten in sub-classes.'
 
     def check_formater_output(self, expected_strings: Iterable[str], delimiter: str = ' '):
         sample_input = delimiter.join(expected_strings)
