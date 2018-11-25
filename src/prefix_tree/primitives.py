@@ -200,9 +200,6 @@ class PrefixTreeEdge:
             # current word and edge are the same, mark target node as terminal
             self._target_node.terminal_node = True
 
-    def __str__(self):
-        return self._label if self._label is not None else ""
-
     def to_regexp(self):
         from_below = self._target_node.to_regexp()
 

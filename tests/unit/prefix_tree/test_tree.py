@@ -63,3 +63,7 @@ class PrefixTreeTest(TestCase):
     def test_can_be_instantiated_with_initial_iterable_of_strings(self, expected_strings):
         self._tree = PrefixTree(expected_strings)
         self.assert_strings_can_be_matched(expected_strings)
+
+    def test_it_ignores_empty_strings(self):
+        tree = PrefixTree([''])
+        self.assertEqual(PythonFormater._EMPTY_STRING_MATCH, tree.to_regexp(PythonFormater))

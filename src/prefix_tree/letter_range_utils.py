@@ -10,19 +10,18 @@ def escape_char_in_square_brackets(character: str) -> str:
 
 
 def _formatted_letter_range(first_letter: str, last_letter: str) -> List[str]:
-    if first_letter != last_letter:
-        if ord(first_letter) + 1 < ord(last_letter):
-            return [first_letter + '-' + last_letter]
+    if first_letter == last_letter:
+        raise RuntimeError(
+            "first_letter and last_letter must not be the same."
+        )  # pragma: no cover
 
-        return [first_letter, last_letter]
+    if ord(first_letter) + 1 < ord(last_letter):
+        return [first_letter + '-' + last_letter]
 
-    return [last_letter]
+    return [first_letter, last_letter]
 
 
 def _is_next_letter(first_letter: str, second_letter: str) -> bool:
-    if first_letter == '' or second_letter == '':
-        return False
-
     return ord(first_letter) + 1 == ord(second_letter)
 
 
@@ -66,14 +65,12 @@ def collapse_letter_ranges(  # pylint: disable=too-many-branches; required for F
                 first_letter = current_letter
 
         elif state == _STATE_IN_RANGE:
-            if not current_letter.isalnum():
-                state = _STATE_NO_RANGE
-                letters_out.extend(_formatted_letter_range(first_letter, previous_letter))
-                letters_out.append(escape_char_in_square_brackets(current_letter))
-            elif not _is_next_letter(previous_letter, current_letter):
+            if not _is_next_letter(previous_letter, current_letter):
                 state = _STATE_RANGE_START
                 letters_out.extend(_formatted_letter_range(first_letter, previous_letter))
                 first_letter = current_letter
+        else:
+            raise RuntimeError("Unexpected state: " + str(state))  # pragma: no cover
 
         if index == last_index:
             if state == _STATE_RANGE_START:
