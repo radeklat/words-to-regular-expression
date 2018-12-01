@@ -2,10 +2,18 @@
 import argparse
 import os
 import sys
-from typing import TextIO, Dict, Type
 
+from typing import (  # pylint: disable=unused-import; false positive
+    Dict,
+    TextIO,
+    Type,
+)
+
+from src.formaters import (
+    ALL_FORMATERS,
+    BaseFormater,
+)
 from src.prefix_tree.tree import PrefixTree
-from src.formaters import BaseFormater, ALL_FORMATERS
 
 
 def stream_to_regexp(stream: TextIO, formater: Type[BaseFormater]) -> str:
