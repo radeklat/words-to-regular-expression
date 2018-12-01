@@ -39,7 +39,7 @@ def collapse_letter_ranges(  # pylint: disable=too-many-branches; required for F
 
     # Make hyphen first in the list, if present
     letters.sort(key=lambda character: -1 if character == '-' else ord(character))
-    letters_out: List[str] = []
+    letters_out = []  # type: List[str]
     state = _STATE_NO_RANGE
     first_letter = ''
     previous_letter = ''

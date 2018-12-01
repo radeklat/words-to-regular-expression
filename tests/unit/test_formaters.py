@@ -67,7 +67,7 @@ class OtherFormatersTestCase(TestCase):
 
 
 class BaseTestCase(TestCase):
-    _FORMATER: Type[BaseFormater] = BaseFormater
+    _FORMATER = BaseFormater  # type: Type[BaseFormater]
 
     def setUp(self):
         assert self._FORMATER != BaseFormater, \
