@@ -1,3 +1,8 @@
+[![Master Build Status](https://travis-ci.org/radeklat/words-to-regular-expression.svg?branch=master)](https://travis-ci.org/radeklat/words-to-regular-expression)
+[![Develop Build Status](https://travis-ci.org/radeklat/words-to-regular-expression.svg?branch=develop)](https://travis-ci.org/radeklat/words-to-regular-expression)
+
+Python 3.4+
+
 Overview
 ========
 
@@ -26,5 +31,3 @@ For example _"test"_ and _"te*st"_ will become _te(?:st|\*st)_.
 **Reading words from a file.**
 
 **Support for the* `in` *operator.**
-
-See the [wiki tab](https://bitbucket.org/rlat/prefixtree/wiki/) for more information.
