@@ -2,6 +2,7 @@ import sys
 
 from hypothesis import strategies as st
 
+
 NON_EMPTY_STRINGS = st.characters().filter(lambda _: _.strip() != "")
 
 
@@ -34,7 +35,7 @@ SPECIAL_CHARACTER_STRINGS = {
     '}': r'\}',
     '{}': r'\{\}',
     '{1}': r'\{1\}',
-    '{1,3}': r'\{1\,3\}' if sys.version_info[1] < 6 else r'\{1,3\}',
+    '{1,3}': r'\{1,3\}' if sys.version_info >= (3, 6, 4) else r'\{1\,3\}',
     '++': r'\+{2}',
     '...': r'\.{3}',
     '.': r'\.',
