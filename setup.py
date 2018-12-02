@@ -12,7 +12,7 @@ setuptools.setup(
     description='A command line tool and Python library for converting '
                 'lists of strings into matching regular expressions '
                 '(finite automata).',
-    long_description=open('README.md').read() + '\n' + open('CHANGES.md').read(),
+    long_description=open('README.md').read() + '\n' + open('CHANGELOG.md').read(),
     # https://pypi.org/classifiers/
     classifiers=[
         'Development Status :: 5 - Production/Stable',
