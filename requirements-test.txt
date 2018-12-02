@@ -1,0 +1,8 @@
+coverage
+pylint<2.0.4
+mypy
+codecov
+hypothesis
+pytest<4
+pytest-cov
+pytest-xdist
