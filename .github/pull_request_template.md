@@ -23,6 +23,6 @@ _Keep the only the checklist based on what you about to do - finish a Feature or
 
 - [ ] A [new release](../releases/new) is created on GitHub.
 - [ ] `<VERSION>` is used as title.
-- [ ] The following is used as description: `[Change log](../../../blob/develop/CHANGELOG.md#<ANCHOR>)`
+- [ ] The following is used as description: `[Change log](../../blob/develop/CHANGELOG.md#<ANCHOR>)`
 - [ ] `<ANCHOR>` matches one in live [CHANGELOG.md](../blob/develop/CHANGELOG.md).
  
