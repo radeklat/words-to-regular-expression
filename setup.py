@@ -8,7 +8,7 @@ from w2re import (
 
 DESCRIPTION = (
     'A command line tool and Python library for converting lists of strings '
-    'into matching regular expressions (finite automata).'
+    'into matching regular expressions.'
 )
 
 
