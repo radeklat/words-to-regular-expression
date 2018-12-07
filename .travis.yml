@@ -1,24 +1,25 @@
 language: python
-
 cache: pip
-
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
-
-# Enable 3.7 without globally enabling sudo and dist: xenial for other build jobs
+- '3.4'
+- '3.5'
+- '3.6'
 matrix:
   include:
-    - python: "3.7"
-      dist: xenial
-      sudo: true
-
+  - python: '3.7'
+    dist: xenial
+    sudo: true
 install:
-  - pip install -r requirements-test.txt
-
+- pip install -r requirements-test.txt
 script:
-  - bash test.sh --noinstall --no-update --novirtualenv --strict
-
+- bash test.sh --noinstall --no-update --novirtualenv --strict
 after_success:
-  - codecov
+- codecov
+deploy:
+  provider: pypi
+  user: "radeklat"
+  password:
+    secure: fbtCWejvIdHGGo9bxIOwaOii3aD2GcF9EYDqvfDC3JCnofYXHedqm14d+mvZMb/7SRSgPkyn98AbXmL2balnXUm+iUBkZFVeZG9vohKnbbGau5LgvDMKp3qcNJKXv8M88rBCnTx7V/CukkaQgM4lcEBW5/RoS/9G8WP5urD+XfTK2GCW1L0ZeAMCP7Reh2T9Ua0mFVXC8lJ32KaoGh9rELeUu8Peb2SirStsCMypsgNIaVxsYeHYMhOfZc2R04/WiU833YnnMGZPG5z/u4Gk+Us6VCvafpPugf/lu6b2mCh4CiPV1aaVm6x08ZxU0l3aU4qZehrFjDzCzjuUayZudG4cRSJgVoqshSmphg2Wtw3tCtlcR34IZyipB/T2QOlbWwN8EWdgcm3GKvnrTdy5OhL8zCPouZIE9I3D6RXUrYwifUU3ebudSlbtX3PpH3/IhrGZiOg8oN6Rg1hkyvpZVOUTLKFPBrqDKKuVyvCIl9bcBjlLuZJOcGvLFpPD604+Ebbfrsl2n8d1uqHN0lzK+vXTGZ//mVi5/gAjxSeKv6/Y2YjaJ7oMUbLi22b0e4XZkCs++VVE3zniR9FYIiLzjRvFMQ2w5INqgSS8mGD/iiUDSS597+eLXZyvQg/pVulnlqvlySdc7yCxfVJ9mvAwBfhcQMKMt2XAQIJwb7Ywvzw=
+  on:
+    branch: master
+  skip_existing: true

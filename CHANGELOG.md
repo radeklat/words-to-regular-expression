@@ -14,6 +14,13 @@ Types of changes are:
 
 ## Unreleased
 
+## [3.0.1] - 2018-12-07
+
+### Fixed
+* Command line interface:
+    * Returning extra new line at the end of output
+    * The `-i` option not creating file handler
+
 ## [3.0.0] - 2018-12-02
 
 ### Added
@@ -45,5 +52,6 @@ Types of changes are:
 ### Added
 * Initial source code
 
-[Unreleased]: https://github.com/ElucidataLtd/gel-toms-microservice-skeleton/compare/3.0.0...HEAD
-[3.0.0]: https://github.com/ElucidataLtd/gel-toms-microservice-skeleton/compare/initial...3.0.0
+[Unreleased]: https://github.com/radeklat/words-to-regular-expression/compare/3.0.1...HEAD
+[3.0.0]: https://github.com/radeklat/words-to-regular-expression/compare/3.0.0...3.0.1
+[3.0.0]: https://github.com/radeklat/words-to-regular-expression/compare/initial...3.0.0
