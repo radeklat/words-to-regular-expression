@@ -3,16 +3,25 @@ import setuptools
 from src import __version__, APPLICATION_NAME
 
 
+DESCRIPTION = (
+    'A command line tool and Python library for converting lists of strings '
+    'into matching regular expressions (finite automata).'
+)
+
+
 setuptools.setup(
     name=APPLICATION_NAME,
     version=__version__,
     url='https://github.com/radeklat/words-to-regular-expression',
     author='Radek Lat',
     author_email='radek.lat@gmail.com',
-    description='A command line tool and Python library for converting '
-                'lists of strings into matching regular expressions '
-                '(finite automata).',
-    long_description=open('README.md').read() + '\n' + open('CHANGELOG.md').read(),
+    description=DESCRIPTION,
+    long_description=(
+        DESCRIPTION + '\n\nSee project on GitHub: '
+        'https://github.com/radeklat/words-to-regular-expression\n\nChangelog: '
+        'https://github.com/radeklat/words-to-regular-expression/blob/develop/'
+        'CHANGELOG.md#unreleased'
+    ),
     # https://pypi.org/classifiers/
     classifiers=[
         'Development Status :: 5 - Production/Stable',
