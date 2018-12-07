@@ -14,6 +14,11 @@ Types of changes are:
 
 ## Unreleased
 
+### Fixed
+* Command line interface:
+    * Returning extra new line at the end of output
+    * The `-i` option not creating file handler
+
 ## [3.0.0] - 2018-12-02
 
 ### Added

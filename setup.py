@@ -1,10 +1,10 @@
 import setuptools
 
-from src import __version__
+from src import __version__, APPLICATION_NAME
 
 
 setuptools.setup(
-    name='words2regexp',
+    name=APPLICATION_NAME,
     version=__version__,
     url='https://github.com/radeklat/words-to-regular-expression',
     author='Radek Lat',
@@ -21,7 +21,6 @@ setuptools.setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -32,14 +31,11 @@ setuptools.setup(
         'Topic :: Utilities'
     ],
     license='MIT',
-    py_modules=['src'],
+    packages=setuptools.find_packages(exclude=["tests.*"]),
     entry_points={
         'console_scripts': [
-            'w2re=src.w2re:main'
+            APPLICATION_NAME + '=src.w2re:main'
         ]
-    },
-    install_requires=[
-        'typing;python_version<"3.4"',
-    ]
+    }
 )
 

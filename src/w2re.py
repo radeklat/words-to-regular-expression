@@ -9,6 +9,7 @@ from typing import (  # pylint: disable=unused-import; false positive
     Type,
 )
 
+from src import APPLICATION_NAME
 from src.formaters import (
     ALL_FORMATERS,
     BaseFormater,
@@ -28,11 +29,15 @@ FORMATERS_BY_CODE = {
 }  # type: Dict[str, Type[BaseFormater]]
 
 
-def main():
+APPLICATION_DESCRIPTION = (
+    APPLICATION_NAME + ': Words to Regular Expression, script for converting '
+    'a list of words into compressed regular expression. Empty lines are ignored.'
+)
+
+
+def main(mock_args=None):
     parser = argparse.ArgumentParser(
-        description='w2re: Words to Regular Expression, script for '
-                    'converting a list of words into compressed regular '
-                    'expression. Empty lines are ignored.',
+        description=APPLICATION_DESCRIPTION,
         formatter_class=argparse.RawTextHelpFormatter
     )
 
@@ -49,20 +54,24 @@ def main():
         default=default_formatter_code,
         metavar='<type>',
         choices=tuple(FORMATERS_BY_CODE.keys()),
-        help="Output format. Possible value are:\n\n{}\n\nDefault value is '{}'.".format(
-            formats_list, default_formatter_code
+        help="Output format. Default is '{}'. Possible value are:\n\n{}.".format(
+            default_formatter_code, formats_list
         )
     )
 
     parser.add_argument(
-        '-i', dest='input', default=sys.stdin, metavar='<filename>',
+        '-i',
+        dest='input',
+        default=sys.stdin,
+        metavar='<filename>',
+        type=argparse.FileType('r'),
         help='Input file. If none specified, stdin will be used instead.'
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(mock_args)
 
-    print(stream_to_regexp(args.input, FORMATERS_BY_CODE[args.formater]))
+    print(stream_to_regexp(args.input, FORMATERS_BY_CODE[args.formater]), end='')
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     main()
