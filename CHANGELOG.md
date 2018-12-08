@@ -14,6 +14,8 @@ Types of changes are:
 
 ## Unreleased
 
+## [3.1.0] - 2018-12-08
+
 ### Added
 * `iterable_to_regexp` function for  easier conversion of string
 * Exports of `iterable_to_regexp`, `stream_to_regexp`, `PefixTree`, `BaseFormatter`, `PythonFormatter`, and `PythonWordMatchFormatter`
@@ -61,6 +63,7 @@ Types of changes are:
 ### Added
 * Initial source code
 
-[Unreleased]: https://github.com/radeklat/words-to-regular-expression/compare/3.0.1...HEAD
+[Unreleased]: https://github.com/radeklat/words-to-regular-expression/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/radeklat/words-to-regular-expression/compare/3.0.1...3.1.0
 [3.0.1]: https://github.com/radeklat/words-to-regular-expression/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/radeklat/words-to-regular-expression/compare/initial...3.0.0
