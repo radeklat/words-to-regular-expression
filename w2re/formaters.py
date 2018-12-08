@@ -1,4 +1,4 @@
-from src.prefix_tree.primitives import PrefixTreeNode
+from w2re.prefix_tree.primitives import PrefixTreeNode
 
 
 class BaseFormater:

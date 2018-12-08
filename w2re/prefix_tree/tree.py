@@ -1,7 +1,7 @@
 from typing import Optional, Iterable, Type
 
-from src.prefix_tree.primitives import PrefixTreeNode
-from src.formaters import BaseFormater
+from w2re.prefix_tree.primitives import PrefixTreeNode
+from w2re.formaters import BaseFormater
 
 
 class PrefixTree:

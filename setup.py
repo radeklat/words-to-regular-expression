@@ -1,6 +1,6 @@
 import setuptools
 
-from src import __version__, APPLICATION_NAME
+from w2re import __version__, APPLICATION_NAME
 
 
 DESCRIPTION = (
@@ -43,7 +43,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=["tests.*"]),
     entry_points={
         'console_scripts': [
-            APPLICATION_NAME + '=src.w2re:main'
+            APPLICATION_NAME + '=w2re.command_line_w2re:main'
         ]
     }
 )

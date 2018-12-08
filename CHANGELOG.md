@@ -14,6 +14,13 @@ Types of changes are:
 
 ## Unreleased
 
+### Added
+* `iterable_to_regexp` function for  easier conversion of string
+* Exports of `iterable_to_regexp`, `stream_to_regexp`, `PefixTree`, `BaseFormater`, `PythonFormater`, and `PythonWordMatchFormater`
+
+### Fixed
+* Library exports `w2re` instead of `src`
+
 ## [3.0.1] - 2018-12-07
 
 ### Fixed

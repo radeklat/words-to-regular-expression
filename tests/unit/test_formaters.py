@@ -11,13 +11,13 @@ from hypothesis import (
     given,
 )
 
-from src.formaters import (
+from w2re.formaters import (
     ALL_FORMATERS,
     BaseFormater,
     PythonFormater,
     PythonWordMatchFormater,
 )
-from src.prefix_tree.tree import PrefixTree
+from w2re.prefix_tree.tree import PrefixTree
 from tests.helpers.hypothesis import (
     LISTS_OF_WORDS,
     NON_ALPHANUMERIC_STRING,

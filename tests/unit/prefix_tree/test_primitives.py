@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.prefix_tree.primitives import (
+from w2re.prefix_tree.primitives import (
     compress,
 )
 

@@ -1,27 +1,19 @@
 #!/usr/bin/python
 import argparse
-import os
 import sys
-
 from typing import (  # pylint: disable=unused-import; false positive
     Dict,
-    TextIO,
     Type,
 )
 
-from src import APPLICATION_NAME
-from src.formaters import (
+from w2re import (
+    APPLICATION_NAME,
+)
+from w2re.formaters import (  # pylint: disable=unused-import; false positive
     ALL_FORMATERS,
     BaseFormater,
 )
-from src.prefix_tree.tree import PrefixTree
-
-
-def stream_to_regexp(stream: TextIO, formater: Type[BaseFormater]) -> str:
-    lines_generator = (line for line in stream.read().split(os.linesep) if line)
-    prefix_tree = PrefixTree(lines_generator)
-    return prefix_tree.to_regexp(formater)
-
+from w2re.utils import stream_to_regexp
 
 FORMATERS_BY_CODE = {
     formater.code(): formater
