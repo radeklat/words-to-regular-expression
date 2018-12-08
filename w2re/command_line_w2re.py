@@ -1,32 +1,26 @@
 #!/usr/bin/python
 import argparse
-import os
 import sys
-
 from typing import (  # pylint: disable=unused-import; false positive
     Dict,
-    TextIO,
     Type,
 )
 
-from src import APPLICATION_NAME
-from src.formaters import (
-    ALL_FORMATERS,
-    BaseFormater,
+from w2re import (
+    APPLICATION_NAME,
+    CHANGELOG_URL,
+    __version__ as VERSION
 )
-from src.prefix_tree.tree import PrefixTree
+from w2re.formatters import (  # pylint: disable=unused-import; false positive
+    ALL_FORMATTERS,
+    BaseFormatter,
+)
+from w2re.utils import stream_to_regexp
 
-
-def stream_to_regexp(stream: TextIO, formater: Type[BaseFormater]) -> str:
-    lines_generator = (line for line in stream.read().split(os.linesep) if line)
-    prefix_tree = PrefixTree(lines_generator)
-    return prefix_tree.to_regexp(formater)
-
-
-FORMATERS_BY_CODE = {
-    formater.code(): formater
-    for formater in ALL_FORMATERS
-}  # type: Dict[str, Type[BaseFormater]]
+FORMATTERS_BY_CODE = {
+    formatter.code(): formatter
+    for formatter in ALL_FORMATTERS
+}  # type: Dict[str, Type[BaseFormatter]]
 
 
 APPLICATION_DESCRIPTION = (
@@ -42,18 +36,18 @@ def main(mock_args=None):
     )
 
     formats_list = '\n'.join(
-        "%s:\t%s" % (key, formater.description())
-        for key, formater in FORMATERS_BY_CODE.items()
+        "%s:\t%s" % (key, formatter.description())
+        for key, formatter in FORMATTERS_BY_CODE.items()
     )
 
-    default_formatter_code = ALL_FORMATERS[0].code()
+    default_formatter_code = ALL_FORMATTERS[0].code()
 
     parser.add_argument(
         '-f',
-        dest='formater',
+        dest='formatter',
         default=default_formatter_code,
         metavar='<type>',
-        choices=tuple(FORMATERS_BY_CODE.keys()),
+        choices=tuple(FORMATTERS_BY_CODE.keys()),
         help="Output format. Default is '{}'. Possible value are:\n\n{}.".format(
             default_formatter_code, formats_list
         )
@@ -68,9 +62,22 @@ def main(mock_args=None):
         help='Input file. If none specified, stdin will be used instead.'
     )
 
+    parser.add_argument(
+        '--version',
+        dest='show_version',
+        default=False,
+        action='store_true',
+        help='Show version information.'
+    )
+
     args = parser.parse_args(mock_args)
 
-    print(stream_to_regexp(args.input, FORMATERS_BY_CODE[args.formater]), end='')
+    if args.show_version:
+        print('{} {}\n\nFor changelog, see: {}'.format(
+            APPLICATION_NAME, VERSION, CHANGELOG_URL
+        ))
+    else:
+        print(stream_to_regexp(args.input, FORMATTERS_BY_CODE[args.formatter]), end='')
 
 
 if __name__ == '__main__':  # pragma: no cover

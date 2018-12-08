@@ -11,13 +11,13 @@ from hypothesis import (
     given,
 )
 
-from src.formaters import (
-    ALL_FORMATERS,
-    BaseFormater,
-    PythonFormater,
-    PythonWordMatchFormater,
+from w2re.formatters import (
+    ALL_FORMATTERS,
+    BaseFormatter,
+    PythonFormatter,
+    PythonWordMatchFormatter,
 )
-from src.prefix_tree.tree import PrefixTree
+from w2re.prefix_tree.tree import PrefixTree
 from tests.helpers.hypothesis import (
     LISTS_OF_WORDS,
     NON_ALPHANUMERIC_STRING,
@@ -37,19 +37,19 @@ class BaseFormatterTestCase(TestCase):
             method(*args)
 
     def test_it_asserts_description(self):
-        self.assert_method_raises(BaseFormater.description, AssertionError)
+        self.assert_method_raises(BaseFormatter.description, AssertionError)
 
     def test_it_asserts_code(self):
-        self.assert_method_raises(BaseFormater.code, AssertionError)
+        self.assert_method_raises(BaseFormatter.code, AssertionError)
 
     def test_it_abstracts_wrap_regexp(self):
-        self.assert_method_raises(BaseFormater.wrap_regexp, NotImplementedError, None)
+        self.assert_method_raises(BaseFormatter.wrap_regexp, NotImplementedError, None)
 
 
-class OtherFormatersTestCase(TestCase):
-    def test_formaters_are_listed(self):
+class OtherFormattersTestCase(TestCase):
+    def test_formatters_are_listed(self):
         self.assertGreater(
-            len(ALL_FORMATERS), 0, 'There should be some formaters available.'
+            len(ALL_FORMATTERS), 0, 'There should be some formatters available.'
         )
 
     def assert_method_returns_non_empty_string(self, method: Callable):
@@ -58,24 +58,24 @@ class OtherFormatersTestCase(TestCase):
         ))
 
     def test_it_has_description(self):
-        for formatter in ALL_FORMATERS:
+        for formatter in ALL_FORMATTERS:
             self.assert_method_returns_non_empty_string(formatter.description)
 
     def test_it_has_code(self):
-        for formatter in ALL_FORMATERS:
+        for formatter in ALL_FORMATTERS:
             self.assert_method_returns_non_empty_string(formatter.code)
 
 
 class BaseTestCase(TestCase):
-    _FORMATER = BaseFormater  # type: Type[BaseFormater]
+    _Formatter = BaseFormatter  # type: Type[BaseFormatter]
 
     def setUp(self):
-        assert self._FORMATER != BaseFormater, \
-            '_FORMATER must be overwritten in sub-classes.'
+        assert self._Formatter != BaseFormatter, \
+            '_Formatter must be overwritten in sub-classes.'
 
-    def check_formater_output(self, expected_strings: Iterable[str], delimiter: str = ' '):
+    def check_formatter_output(self, expected_strings: Iterable[str], delimiter: str = ' '):
         sample_input = delimiter.join(expected_strings)
-        regexp = PrefixTree(expected_strings).to_regexp(self._FORMATER)
+        regexp = PrefixTree(expected_strings).to_regexp(self._Formatter)
 
         output_strings = sorted(set(re.compile(regexp).findall(sample_input)))
 
@@ -85,32 +85,32 @@ class BaseTestCase(TestCase):
             msg="Regexp: {}\nInput: '{}'".format(regexp, sample_input)
         )
 
-    def check_formater_output_matches_empty_string(self):
-        regexp = PrefixTree([]).to_regexp(self._FORMATER)
+    def check_formatter_output_matches_empty_string(self):
+        regexp = PrefixTree([]).to_regexp(self._Formatter)
         output_word = re.compile(regexp).findall('')
         self.assertListEqual([''], output_word)
 
 
-class PythonFormaterTest(BaseTestCase):
-    _FORMATER = PythonFormater
+class PythonFormatterTest(BaseTestCase):
+    _Formatter = PythonFormatter
 
     def test_it_generates_regexps_that_can_match_special_characters(self):
-        self.check_formater_output(list(SPECIAL_CHARACTER_STRINGS.keys()))
+        self.check_formatter_output(list(SPECIAL_CHARACTER_STRINGS.keys()))
 
     @given(NON_EMPTY_TEXT_ITERABLES)
     def test_it_generates_regexp_that_can_match_input_strings(self, strings):
-        self.check_formater_output(strings)
+        self.check_formatter_output(strings)
 
     def test_it_generates_regexp_that_can_match_empty_input(self):
-        self.check_formater_output_matches_empty_string()
+        self.check_formatter_output_matches_empty_string()
 
 
-class PythonWordMatchingFormaterTest(BaseTestCase):
-    _FORMATER = PythonWordMatchFormater
+class PythonWordMatchingFormatterTest(BaseTestCase):
+    _Formatter = PythonWordMatchFormatter
 
     @given(LISTS_OF_WORDS, NON_ALPHANUMERIC_STRING)
     def test_it_generates_regexp_that_can_match_input_words(self, words, delimiter):
-        self.check_formater_output(words, delimiter)
+        self.check_formatter_output(words, delimiter)
 
     def test_it_generates_regexp_that_can_match_empty_input(self):
-        self.check_formater_output_matches_empty_string()
+        self.check_formatter_output_matches_empty_string()

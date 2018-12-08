@@ -6,11 +6,11 @@ from os.path import (
 )
 from shutil import rmtree
 from subprocess import (
-    call,
+    call, DEVNULL
 )
 from unittest import TestCase
 
-from src import (
+from w2re import (
     APPLICATION_NAME,
     __version__ as app_version,
 )
@@ -31,7 +31,11 @@ def cleanup_build_artefacts():
 class BuildProcess(TestCase):
     def setUp(self):
         cleanup_build_artefacts()
-        self._build_return_code = call(['python', 'setup.py', 'sdist', 'bdist_wheel'])
+        self._build_return_code = call(
+            ['python', 'setup.py', 'sdist', 'bdist_wheel'],
+            stdout=DEVNULL,
+            stderr=DEVNULL,
+        )
 
     def tearDown(self):
         cleanup_build_artefacts()

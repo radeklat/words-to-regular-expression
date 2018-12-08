@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.prefix_tree.letter_range_utils import collapse_letter_ranges
+from w2re.prefix_tree.letter_range_utils import collapse_letter_ranges
 
 
 class CollapseLettersIntoRangesTest(TestCase):

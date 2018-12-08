@@ -1,7 +1,7 @@
-from src.prefix_tree.primitives import PrefixTreeNode
+from w2re.prefix_tree.primitives import PrefixTreeNode
 
 
-class BaseFormater:
+class BaseFormatter:
     _DESCRIPTION = ''
     _CODE = ''
 
@@ -20,7 +20,7 @@ class BaseFormater:
         return cls._CODE
 
 
-class PythonFormater(BaseFormater):
+class PythonFormatter(BaseFormatter):
     _DESCRIPTION = 'Python regular expression'
     _CODE = 'py'
     _EMPTY_STRING_MATCH = r"\A\Z"
@@ -32,10 +32,10 @@ class PythonFormater(BaseFormater):
         if regexp:
             return regexp
 
-        return PythonFormater._EMPTY_STRING_MATCH
+        return PythonFormatter._EMPTY_STRING_MATCH
 
 
-class PythonWordMatchFormater(PythonFormater):
+class PythonWordMatchFormatter(PythonFormatter):
     _DESCRIPTION = 'Python word matching regular expression'
     _CODE = 'pyw'
 
@@ -46,7 +46,7 @@ class PythonWordMatchFormater(PythonFormater):
         if regexp:
             return r"(?:\W+|\A)({})(?=\W+|\Z)".format(regexp)
 
-        return PythonFormater._EMPTY_STRING_MATCH
+        return PythonFormatter._EMPTY_STRING_MATCH
 
 
-ALL_FORMATERS = (PythonFormater, PythonWordMatchFormater)
+ALL_FORMATTERS = (PythonFormatter, PythonWordMatchFormatter)

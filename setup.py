@@ -1,7 +1,10 @@
 import setuptools
 
-from src import __version__, APPLICATION_NAME
-
+from w2re import (
+    __version__,
+    APPLICATION_NAME,
+    CHANGELOG_URL,
+)
 
 DESCRIPTION = (
     'A command line tool and Python library for converting lists of strings '
@@ -18,9 +21,8 @@ setuptools.setup(
     description=DESCRIPTION,
     long_description=(
         DESCRIPTION + '\n\nSee project on GitHub: '
-        'https://github.com/radeklat/words-to-regular-expression\n\nChangelog: '
-        'https://github.com/radeklat/words-to-regular-expression/blob/develop/'
-        'CHANGELOG.md#unreleased'
+        'https://github.com/radeklat/words-to-regular-expression\n\n'
+        'Changelog: ' + CHANGELOG_URL
     ),
     # https://pypi.org/classifiers/
     classifiers=[
@@ -43,7 +45,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=["tests.*"]),
     entry_points={
         'console_scripts': [
-            APPLICATION_NAME + '=src.w2re:main'
+            APPLICATION_NAME + '=w2re.command_line_w2re:main'
         ]
     }
 )
