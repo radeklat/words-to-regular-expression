@@ -8,6 +8,8 @@ from typing import (  # pylint: disable=unused-import; false positive
 
 from w2re import (
     APPLICATION_NAME,
+    CHANGELOG_URL,
+    __version__ as VERSION
 )
 from w2re.formatters import (  # pylint: disable=unused-import; false positive
     ALL_FORMATTERS,
@@ -60,9 +62,22 @@ def main(mock_args=None):
         help='Input file. If none specified, stdin will be used instead.'
     )
 
+    parser.add_argument(
+        '--version',
+        dest='show_version',
+        default=False,
+        action='store_true',
+        help='Show version information.'
+    )
+
     args = parser.parse_args(mock_args)
 
-    print(stream_to_regexp(args.input, FORMATTERS_BY_CODE[args.formatter]), end='')
+    if args.show_version:
+        print('{} {}\n\nFor changelog, see: {}'.format(
+            APPLICATION_NAME, VERSION, CHANGELOG_URL
+        ))
+    else:
+        print(stream_to_regexp(args.input, FORMATTERS_BY_CODE[args.formatter]), end='')
 
 
 if __name__ == '__main__':  # pragma: no cover

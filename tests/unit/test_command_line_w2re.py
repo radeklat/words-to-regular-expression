@@ -10,6 +10,11 @@ from unittest.mock import (
     patch,
 )
 
+from w2re import (
+    APPLICATION_NAME,
+    CHANGELOG_URL,
+    __version__ as VERSION,
+)
 from w2re.command_line_w2re import main
 from w2re.formatters import (
     ALL_FORMATTERS,
@@ -63,6 +68,16 @@ class Main(TestCase):
     def test_it_uses_stdin_as_input_by_default(self):
         main([])
         self._mock_stream_to_regexp.called_with([sys.stdin, ANY])
+
+    def test_it_prints_out_version(self):
+        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            main(['--version'])
+
+        output = mock_stdout.getvalue()
+
+        self.assertIn(VERSION, output)
+        self.assertIn(APPLICATION_NAME, output)
+        self.assertIn(CHANGELOG_URL, output)
 
 
 class MainIntegration(TestCase):

@@ -17,6 +17,7 @@ Types of changes are:
 ### Added
 * `iterable_to_regexp` function for  easier conversion of string
 * Exports of `iterable_to_regexp`, `stream_to_regexp`, `PefixTree`, `BaseFormatter`, `PythonFormatter`, and `PythonWordMatchFormatter`
+* `--version` argument to command line interface
 
 ### Fixed
 * Library exports `w2re` instead of `src`
