@@ -10,7 +10,7 @@ from tests.helpers.hypothesis import (
     NON_EMPTY_TEXT_ITERABLES,
     SPECIAL_CHARACTER_STRINGS,
 )
-from w2re.formaters import PythonFormater
+from w2re.formatters import PythonFormatter
 from w2re.prefix_tree.tree import PrefixTree
 
 
@@ -47,23 +47,25 @@ class PrefixTreeTest(TestCase):
             self._tree.add(string)
 
         assert_strings_can_be_matched(
-            self, self._tree.to_regexp(PythonFormater), expected_strings
+            self, self._tree.to_regexp(PythonFormatter), expected_strings
         )
 
     @given(NON_EMPTY_TEXT_ITERABLES)
     def test_accepts_iterable_of_strings(self, expected_strings):
         self._tree.extend(expected_strings)
         assert_strings_can_be_matched(
-            self, self._tree.to_regexp(PythonFormater), expected_strings
+            self, self._tree.to_regexp(PythonFormatter), expected_strings
         )
 
     @given(NON_EMPTY_TEXT_ITERABLES)
     def test_can_be_instantiated_with_initial_iterable_of_strings(self, expected_strings):
         self._tree = PrefixTree(expected_strings)
         assert_strings_can_be_matched(
-            self, self._tree.to_regexp(PythonFormater), expected_strings
+            self, self._tree.to_regexp(PythonFormatter), expected_strings
         )
 
     def test_it_ignores_empty_strings(self):
         tree = PrefixTree([''])
-        self.assertEqual(PythonFormater._EMPTY_STRING_MATCH, tree.to_regexp(PythonFormater))
+        self.assertEqual(
+            PythonFormatter._EMPTY_STRING_MATCH, tree.to_regexp(PythonFormatter)
+        )

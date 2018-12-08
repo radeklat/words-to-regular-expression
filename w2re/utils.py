@@ -5,22 +5,22 @@ from typing import (
     Iterable,
 )
 
-from w2re import PythonFormater
-from w2re.formaters import BaseFormater
+from w2re import PythonFormatter
+from w2re.formatters import BaseFormatter
 from w2re.prefix_tree.tree import PrefixTree
 
 
 def stream_to_regexp(
         stream: TextIO,
-        formater: Type[BaseFormater] = PythonFormater
+        formatter: Type[BaseFormatter] = PythonFormatter
 ) -> str:
     lines_generator = (line for line in stream.read().split(os.linesep) if line)
     prefix_tree = PrefixTree(lines_generator)
-    return prefix_tree.to_regexp(formater)
+    return prefix_tree.to_regexp(formatter)
 
 
 def iterable_to_regexp(
         iterable: Iterable[str],
-        formater: Type[BaseFormater] = PythonFormater
+        formatter: Type[BaseFormatter] = PythonFormatter
 ) -> str:
-    return PrefixTree(iterable).to_regexp(formater)
+    return PrefixTree(iterable).to_regexp(formatter)

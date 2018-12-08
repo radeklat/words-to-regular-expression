@@ -16,10 +16,11 @@ Types of changes are:
 
 ### Added
 * `iterable_to_regexp` function for  easier conversion of string
-* Exports of `iterable_to_regexp`, `stream_to_regexp`, `PefixTree`, `BaseFormater`, `PythonFormater`, and `PythonWordMatchFormater`
+* Exports of `iterable_to_regexp`, `stream_to_regexp`, `PefixTree`, `BaseFormatter`, `PythonFormatter`, and `PythonWordMatchFormatter`
 
 ### Fixed
 * Library exports `w2re` instead of `src`
+* Typo `formaters` -> `formatters`
 
 ## [3.0.1] - 2018-12-07
 

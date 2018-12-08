@@ -9,16 +9,16 @@ from typing import (  # pylint: disable=unused-import; false positive
 from w2re import (
     APPLICATION_NAME,
 )
-from w2re.formaters import (  # pylint: disable=unused-import; false positive
-    ALL_FORMATERS,
-    BaseFormater,
+from w2re.formatters import (  # pylint: disable=unused-import; false positive
+    ALL_FORMATTERS,
+    BaseFormatter,
 )
 from w2re.utils import stream_to_regexp
 
-FORMATERS_BY_CODE = {
-    formater.code(): formater
-    for formater in ALL_FORMATERS
-}  # type: Dict[str, Type[BaseFormater]]
+FORMATTERS_BY_CODE = {
+    formatter.code(): formatter
+    for formatter in ALL_FORMATTERS
+}  # type: Dict[str, Type[BaseFormatter]]
 
 
 APPLICATION_DESCRIPTION = (
@@ -34,18 +34,18 @@ def main(mock_args=None):
     )
 
     formats_list = '\n'.join(
-        "%s:\t%s" % (key, formater.description())
-        for key, formater in FORMATERS_BY_CODE.items()
+        "%s:\t%s" % (key, formatter.description())
+        for key, formatter in FORMATTERS_BY_CODE.items()
     )
 
-    default_formatter_code = ALL_FORMATERS[0].code()
+    default_formatter_code = ALL_FORMATTERS[0].code()
 
     parser.add_argument(
         '-f',
-        dest='formater',
+        dest='formatter',
         default=default_formatter_code,
         metavar='<type>',
-        choices=tuple(FORMATERS_BY_CODE.keys()),
+        choices=tuple(FORMATTERS_BY_CODE.keys()),
         help="Output format. Default is '{}'. Possible value are:\n\n{}.".format(
             default_formatter_code, formats_list
         )
@@ -62,7 +62,7 @@ def main(mock_args=None):
 
     args = parser.parse_args(mock_args)
 
-    print(stream_to_regexp(args.input, FORMATERS_BY_CODE[args.formater]), end='')
+    print(stream_to_regexp(args.input, FORMATTERS_BY_CODE[args.formatter]), end='')
 
 
 if __name__ == '__main__':  # pragma: no cover

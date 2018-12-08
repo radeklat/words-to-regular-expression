@@ -1,7 +1,7 @@
-from w2re.formaters import (
-    BaseFormater,
-    PythonFormater,
-    PythonWordMatchFormater,
+from w2re.formatters import (
+    BaseFormatter,
+    PythonFormatter,
+    PythonWordMatchFormatter,
 )
 from w2re.prefix_tree.tree import PrefixTree
 from w2re.utils import (

@@ -11,9 +11,9 @@ from unittest.mock import (
 )
 
 from w2re.command_line_w2re import main
-from w2re.formaters import (
-    ALL_FORMATERS,
-    PythonFormater,
+from w2re.formatters import (
+    ALL_FORMATTERS,
+    PythonFormatter,
 )
 
 
@@ -33,18 +33,18 @@ class Main(TestCase):
         self.assertIn("Words to Regular Expression", mock_stdout.getvalue())
         self._mock_stream_to_regexp.assert_not_called()
 
-    def test_it_uses_python_formater_by_default(self):
+    def test_it_uses_python_formatter_by_default(self):
         main([])
-        self._mock_stream_to_regexp.called_with([ANY, PythonFormater])
+        self._mock_stream_to_regexp.called_with([ANY, PythonFormatter])
 
-    def test_it_accepts_valid_formaters(self):
-        for formater_class in ALL_FORMATERS:
-            formater_code = formater_class.code()
-            main(['-f', formater_code])
-            self._mock_stream_to_regexp.called_with([ANY, formater_class])
+    def test_it_accepts_valid_formatters(self):
+        for formatter_class in ALL_FORMATTERS:
+            formatter_code = formatter_class.code()
+            main(['-f', formatter_code])
+            self._mock_stream_to_regexp.called_with([ANY, formatter_class])
             self._mock_stream_to_regexp.reset()
 
-    def test_it_refuses_unknown_formaters(self):
+    def test_it_refuses_unknown_formatters(self):
         with patch('sys.stderr', new_callable=StringIO):
             with self.assertRaises(SystemExit) as exception_context:
                 main(['-f', 'sjaflksag'])
@@ -71,4 +71,4 @@ class MainIntegration(TestCase):
         with NamedTemporaryFile() as temp_file:
             main(['-i', temp_file.name])
 
-        self.assertEqual(PythonFormater._EMPTY_STRING_MATCH, mock_stdout.getvalue())
+        self.assertEqual(PythonFormatter._EMPTY_STRING_MATCH, mock_stdout.getvalue())
